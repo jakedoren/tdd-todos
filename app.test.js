@@ -1,7 +1,50 @@
-const { it } = require("@jest/globals");
+const { it, expect } = require("@jest/globals");
 const request = require("supertest");
+const { describe } = require("yargs");
 const app = require('./app')
 
-it('should run', () => {
+describe('Todos API', () => {
+
+    it('GET /todos --> array todos', () => {
+        return request(app)
+        .get('/todos')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((response) => {
+            expect(response.body).toEqual(expect.arrayContaining([
+                expect.objectContaining({
+                    name: expect.any(String),
+                    completed: expect.any(Boolean)
+                })
+            ]))
+        })
+    })
+
+    it('GET /todos/id --> specific todo by ID', () => {
+        return request(app)
+        .get('/todos')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((response) => {
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    name: expect.any(String),
+                    completed: expect.any(Boolean)
+                })
+            )
+        })
+    })
+
+    it('GET /todos/id --> 404 if not found', () => {
     
+    })
+
+    it('POST /todos --> create todo', () => {
+    
+    })
+
+    it('GET /todos -- validates request body', () => {
+
+    })
+
 })
