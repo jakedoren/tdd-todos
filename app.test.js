@@ -1,6 +1,4 @@
-const { it, expect } = require("@jest/globals");
 const request = require("supertest");
-const { describe } = require("yargs");
 const app = require('./app')
 
 describe('Todos API', () => {
@@ -22,7 +20,7 @@ describe('Todos API', () => {
 
     it('GET /todos/id --> specific todo by ID', () => {
         return request(app)
-        .get('/todos')
+        .get('/todos/1')
         .expect('Content-Type', /json/)
         .expect(200)
         .then((response) => {
@@ -55,8 +53,8 @@ describe('Todos API', () => {
         })
     })
 
-    it('GET /todos -- validates request body', () => {
-
+    it('POST /todos -- validates request body', () => {
+        return request(app).post('/todos').send({name: 123}).expect(422)
     })
 
 })
